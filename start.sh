@@ -1,2 +1,2 @@
 #!/bin/sh
-npx serve . --listen $PORT
+python3 -m http.server ${PORT:-8080}
