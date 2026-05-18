@@ -74,30 +74,28 @@
   </button>
 
   <script>
-    const ENDPOINT_URL = "https://flow.zoho.com/916614704/flow/webhook/incoming?zapikey=1001.5f14221452505497e566ce32b2d990dc.3959af0b4aa2a82d23a89186e31de667&isdebug=true";
-
     async function callEndpoint() {
       const btn = document.getElementById("codeBtn");
       btn.disabled = true;
       btn.classList.add("loading");
 
       const payload = {
-        source_id:      "REPLACE",   // <-- map your value
-        customer_id:    "REPLACE",   // <-- map your value
-        version:        "REPLACE",   // <-- map your value
-        model:          "REPLACE",   // <-- map your value
-        trigger:        "REPLACE",   // <-- map your value
-        amount:         "REPLACE",   // <-- map your value
-        previous_value: "REPLACE",   // <-- map your value
-        new_value:      "REPLACE",   // <-- map your value
+        source_id:      "REPLACE",
+        customer_id:    "REPLACE",
+        version:        "REPLACE",
+        model:          "REPLACE",
+        trigger:        "REPLACE",
+        amount:         "REPLACE",
+        previous_value: "REPLACE",
+        new_value:      "REPLACE",
         timestamp:      new Date().toISOString()
       };
 
       try {
-        const response = await fetch(ENDPOINT_URL, {
-          method: "POST",
+        const response = await fetch("/trigger", {
+          method:  "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
+          body:    JSON.stringify(payload)
         });
 
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
