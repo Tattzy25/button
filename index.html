@@ -74,28 +74,38 @@
   </button>
 
   <script>
+    // ── YOUR VARIABLES — swap these with whatever your UI provides ────────────
+    var SOURCE_ID      = "";
+    var CUSTOMER_ID    = "";
+    var VERSION        = "";
+    var MODEL          = "";
+    var TRIGGER        = "";
+    var AMOUNT         = "";
+    var PREVIOUS_VALUE = "";
+    var NEW_VALUE      = "";
+    // TIMESTAMP is auto-generated — do not touch
+    // ─────────────────────────────────────────────────────────────────────────
+
     async function callEndpoint() {
       const btn = document.getElementById("codeBtn");
       btn.disabled = true;
       btn.classList.add("loading");
 
-      const payload = {
-        source_id:      "REPLACE",
-        customer_id:    "REPLACE",
-        version:        "REPLACE",
-        model:          "REPLACE",
-        trigger:        "REPLACE",
-        amount:         "REPLACE",
-        previous_value: "REPLACE",
-        new_value:      "REPLACE",
-        timestamp:      new Date().toISOString()
-      };
-
       try {
         const response = await fetch("/trigger", {
           method:  "POST",
           headers: { "Content-Type": "application/json" },
-          body:    JSON.stringify(payload)
+          body: JSON.stringify({
+            source_id:      SOURCE_ID,
+            customer_id:    CUSTOMER_ID,
+            version:        VERSION,
+            model:          MODEL,
+            trigger:        TRIGGER,
+            amount:         AMOUNT,
+            previous_value: PREVIOUS_VALUE,
+            new_value:      NEW_VALUE,
+            timestamp:      new Date().toISOString()
+          })
         });
 
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
