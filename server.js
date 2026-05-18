@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const fetch = (...args) =>
   import("node-fetch").then(({ default: f }) => f(...args));
 
@@ -9,7 +10,7 @@ const ZOHO_URL = process.env.ZOHO_WEBHOOK_URL;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.post("/trigger", async (req, res) => {
   try {
