@@ -1,146 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Code Button</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      background: transparent;
-    }
-
-    .cssbuttons-io {
-      position: relative;
-      font-family: inherit;
-      font-weight: 500;
-      font-size: 18px;
-      letter-spacing: 0.05em;
-      border-radius: 0.8em;
-      cursor: pointer;
-      border: none;
-      background: linear-gradient(to right, #8e2de2, #4a00e0);
-      color: ghostwhite;
-      overflow: hidden;
-    }
-    .cssbuttons-io svg {
-      width: 1.2em;
-      height: 1.2em;
-      margin-right: 0.5em;
-    }
-    .cssbuttons-io span {
-      position: relative;
-      z-index: 10;
-      transition: color 0.4s;
-      display: inline-flex;
-      align-items: center;
-      padding: 0.8em 1.2em 0.8em 1.05em;
-    }
-    .cssbuttons-io::before,
-    .cssbuttons-io::after {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
-    .cssbuttons-io::before {
-      content: "";
-      background: #000;
-      width: 120%;
-      left: -10%;
-      transform: skew(30deg);
-      transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
-    }
-    .cssbuttons-io:hover::before {
-      transform: translate3d(100%, 0, 0);
-    }
-    .cssbuttons-io:active {
-      transform: scale(0.95);
-    }
-
-    /* Loading spinner inside button */
-    .cssbuttons-io.loading span::after {
-      content: "";
-      display: inline-block;
-      width: 0.8em;
-      height: 0.8em;
-      border: 2px solid rgba(255,255,255,0.4);
-      border-top-color: #fff;
-      border-radius: 50%;
-      margin-left: 0.6em;
-      animation: spin 0.6s linear infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Button</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; } 
+        body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: transparent; } 
+        .cssbuttons-io { position: relative; font-family: inherit; font-weight: 500; font-size: 18px; letter-spacing: 0.05em; border-radius: 0.8em; cursor: pointer; border: none; background: linear-gradient(to right, #8e2de2, #4a00e0); color: ghostwhite; overflow: hidden; } 
+        .cssbuttons-io svg { width: 1.2em; height: 1.2em; margin-right: 0.5em; } 
+        .cssbuttons-io span { position: relative; z-index: 10; transition: color 0.4s; display: inline-flex; align-items: center; padding: 0.8em 1.2em 0.8em 1.05em; } 
+        .cssbuttons-io::before, .cssbuttons-io::after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; } 
+        .cssbuttons-io::before { content: ""; background: #000; width: 120%; left: -10%; transform: skew(30deg); transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1); } 
+        .cssbuttons-io:hover::before { transform: translate3d(100%, 0, 0); } 
+        .cssbuttons-io:active { transform: scale(0.95); } 
+        /* Loading spinner inside button */ 
+        .cssbuttons-io.loading span::after { content: ""; display: inline-block; width: 0.8em; height: 0.8em; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; margin-left: 0.6em; animation: spin 0.6s linear infinite; } 
+        @keyframes spin { to { transform: rotate(360deg); } } 
+    </style>
 </head>
 <body>
 
-  <button class="cssbuttons-io" id="codeBtn" onclick="callEndpoint()">
-    <span>
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 0h24v24H0z" fill="none"></path>
-        <path
-          d="M24 12l-5.657 5.657-1.414-1.414L21.172 12l-4.243-4.243 1.414-1.414L24 12zM2.828 12l4.243 4.243-1.414 1.414L0 12l5.657-5.657L7.07 7.757 2.828 12zm6.96 9H7.66l6.552-18h2.128L9.788 21z"
-          fill="currentColor"
-        ></path>
-      </svg>
-      Code
-    </span>
-  </button>
+    <button class="cssbuttons-io" id="codeBtn" onclick="callEndpoint()">
+        <span>
+            <svg viewBox="0 0 24 24" xmlns="http://w3.org">
+                <path d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M24 12l-5.657 5.657-1.414-1.414L21.172 12l-4.243-4.243 1.414-1.414L24 12zM2.828 12l4.243 4.243-1.414 1.414L0 12l5.657-5.657L7.07 7.757 2.828 12zm6.96 9H7.66l6.552-18h2.128L9.788 21z" fill="currentColor"></path>
+            </svg>
+            Code
+        </span>
+    </button>
 
-  <script>
-    // ─── REPLACE THIS WITH YOUR ACTUAL ENDPOINT ───────────────────────────────
-    const ENDPOINT_URL = "https://flow.zoho.com/916614704/flow/webhook/incoming?zapikey=1001.6989d705c63dc9f9caecad4f8be636ff.6e522f17811ebc65b996a4144eab2818&isdebug=false";
+    <script>
+        const ENDPOINT_URL = "https://zoho.com";
 
-    // ─── OPTIONAL: HTTP method — change to "POST", "PUT", etc. if needed ──────
-    const HTTP_METHOD = "GET";
+        // Global state object mapping directly to your tracking variables
+        // Update these fields anywhere in your app context before the user clicks the button
+        window.TrackingState = {
+            SOURCE_ID: "",
+            CUSTOMER_ID: "",
+            VERSION: "",
+            MODEL: "",
+            TRIGGER: "",
+            AMOUNT: "",
+            PREVIOUS_VALUE: "",
+            NEW_VALUE: ""
+        };
 
-    // ─── OPTIONAL: Body payload — only used for POST/PUT/PATCH ───────────────
-    // Set to null if not needed, or replace {} with your actual payload
-    const REQUEST_BODY = null;
-    // const REQUEST_BODY = JSON.stringify({ key: "value" });
+        async function callEndpoint() {
+            const btn = document.getElementById("codeBtn");
+            btn.disabled = true;
+            btn.classList.add("loading");
 
-    // ─── OPTIONAL: Headers — add auth tokens, content-type, etc. here ─────────
-    const HEADERS = {
-      "Content-Type": "application/json",
-      // "Authorization": "Bearer YOUR_TOKEN_HERE",
-    };
-    // ──────────────────────────────────────────────────────────────────────────
+            // Generates raw headers directly from the active window tracking object fields
+            const DYNAMIC_HEADERS = {
+                "Content-Type": "application/json",
+                "SOURCE_ID": String(window.TrackingState.SOURCE_ID),
+                "CUSTOMER_ID": String(window.TrackingState.CUSTOMER_ID),
+                "VERSION": String(window.TrackingState.VERSION),
+                "MODEL": String(window.TrackingState.MODEL),
+                "TRIGGER": String(window.TrackingState.TRIGGER),
+                "AMOUNT": String(window.TrackingState.AMOUNT),
+                "PREVIOUS_VALUE": String(window.TrackingState.PREVIOUS_VALUE),
+                "NEW_VALUE": String(window.TrackingState.NEW_VALUE),
+                "TIMESTAMP": new Date().toISOString()
+            };
 
-    async function callEndpoint() {
-      const btn = document.getElementById("codeBtn");
+            try {
+                const response = await fetch(ENDPOINT_URL, {
+                    method: "POST",
+                    headers: DYNAMIC_HEADERS,
+                    body: JSON.stringify({})
+                });
 
-      btn.disabled = true;
-      btn.classList.add("loading");
-
-      try {
-        await fetch(ENDPOINT_URL, {
-          method: "POST",
-          mode: "no-cors",
-          body: "trigger=1",
-        });
-        console.log("✅ POST sent to Zoho");
-
-        // ── Optional: do something with the response here ──
-        // Example: window.parent.postMessage({ type: "BUTTON_RESPONSE", data }, "*");
-
-      } catch (err) {
-        console.error("❌ Endpoint error:", err.message);
-      } finally {
-        btn.disabled = false;
-        btn.classList.remove("loading");
-      }
-    }
-  </script>
-
+                if (response.ok) {
+                    console.log("🤡 Dispatched directly to Zoho Flow.");
+                } else {
+                    console.error("Server error:", response.status);
+                }
+            } catch (err) {
+                console.error("Network error:", err);
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove("loading");
+            }
+        }
+    </script>
 </body>
 </html>
