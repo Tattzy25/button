@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Code Button UI</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; } 
-        body { display: flex; gap: 20px; align-items: center; justify-content: center; min-height: 100vh; background: transparent; }
+        body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: transparent; overflow: hidden; }
 
         .cssbuttons-io { 
             position: relative; 
@@ -22,44 +21,21 @@
             overflow: hidden; 
         } 
         
-        .cssbuttons-io svg { 
-            width: 1.2em; height: 1.2em; margin-right: 0.5em; 
-        } 
-        
-        .cssbuttons-io span { 
-            position: relative; 
-            z-index: 10; 
-            transition: color 0.4s; 
-            display: inline-flex; 
-            align-items: center; 
-            padding: 0.8em 1.2em 0.8em 1.05em; 
-        } 
-        
-        .cssbuttons-io::before, .cssbuttons-io::after { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; 
-        } 
-        
-        .cssbuttons-io::before { 
-            content: ""; background: #000; width: 120%; left: -10%; transform: skew(30deg); transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1); 
-        } 
-        
-        .cssbuttons-io:hover::before { 
-            transform: translate3d(100%, 0, 0); 
-        } 
-        
-        .cssbuttons-io:active { 
-            transform: scale(0.95); 
-        } 
+        .cssbuttons-io svg { width: 1.2em; height: 1.2em; margin-right: 0.5em; } 
+        .cssbuttons-io span { position: relative; z-index: 10; transition: color 0.4s; display: inline-flex; align-items: center; padding: 0.8em 1.2em 0.8em 1.05em; } 
+        .cssbuttons-io::before, .cssbuttons-io::after { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; } 
+        .cssbuttons-io::before { content: ""; background: #000; width: 120%; left: -10%; transform: skew(30deg); transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1); } 
+        .cssbuttons-io:hover::before { transform: translate3d(100%, 0, 0); } 
+        .cssbuttons-io:active { transform: scale(0.95); } 
 
-        .cssbuttons-io.loading span::after { 
-            content: ""; display: inline-block; width: 0.8em; height: 0.8em; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; margin-left: 0.6em; animation: spin 0.6s linear infinite; 
-        } 
+        .cssbuttons-io.loading span::after { content: ""; display: inline-block; width: 0.8em; height: 0.8em; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; margin-left: 0.6em; animation: spin 0.6s linear infinite; } 
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <button class="cssbuttons-io" onclick="callZohoFlow(this, 'Button_1')"> 
+    <!-- ONLY ONE BUTTON INSTANCE HERE -->
+    <button class="cssbuttons-io" onclick="callZohoFlow(this, 'Main_Code_Trigger')"> 
         <span>
             <svg viewBox="0 0 24 24" xmlns="http://w3.org"> 
                 <path d="M0 0h24v24H0z" fill="none"></path> 
@@ -68,17 +44,8 @@
         </span> 
     </button> 
 
-    <button class="cssbuttons-io" onclick="callZohoFlow(this, 'Button_2')"> 
-        <span>
-            <svg viewBox="0 0 24 24" xmlns="http://w3.org"> 
-                <path d="M0 0h24v24H0z" fill="none"></path> 
-                <path d="M24 12l-5.657 5.657-1.414-1.414L21.172 12l-4.243-4.243 1.414-1.414L24 12zM2.828 12l4.243 4.243-1.414 1.414L0 12l5.657-5.657L7.07 7.757 2.828 12zm6.96 9H7.66l6.552-18h2.128L9.788 21z" fill="currentColor"></path> 
-            </svg> Code
-        </span> 
-    </button>
-
     <script>
-        const ENDPOINT_URL = "https://flow.zoho.com/916614704/flow/webhook/incoming?zapikey=1001.056cce6bef5f18c7cef879e64d6b10c8.86bd8d4d9b305a711aa47a7de38a7d45&isdebug=true";
+        const ENDPOINT_URL = "https://flow.zoho.com/916614704/flow/webhook/incoming?zapikey=1001.5f14221452505497e566ce32b2d990dc.3959af0b4aa2a82d23a89186e31de667&isdebug=true";
 
         window.TrackingState = {
             SOURCE_ID: "",
@@ -114,14 +81,8 @@
                     headers: DYNAMIC_HEADERS,
                     body: JSON.stringify({})
                 });
-
-                if (response.ok) {
-                    console.log(`Success: Dispatched ${buttonIdentifier}`);
-                } else {
-                    console.error("Server Error:", response.status);
-                }
             } catch (err) {
-                console.error("Network Error:", err);
+                console.error(err);
             } finally {
                 btnElement.disabled = false;
                 btnElement.classList.remove("loading");
