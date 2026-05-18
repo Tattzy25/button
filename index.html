@@ -123,23 +123,12 @@
       btn.classList.add("loading");
 
       try {
-        const options = {
-          method: HTTP_METHOD,
-          headers: HEADERS,
-        };
-
-        if (REQUEST_BODY && ["POST", "PUT", "PATCH"].includes(HTTP_METHOD)) {
-          options.body = REQUEST_BODY;
-        }
-
-        const response = await fetch(ENDPOINT_URL, options);
-
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-
-        const data = await response.json().catch(() => response.text());
-        console.log("✅ Endpoint response:", data);
+        await fetch(ENDPOINT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: "trigger=1",
+        });
+        console.log("✅ POST sent to Zoho");
 
         // ── Optional: do something with the response here ──
         // Example: window.parent.postMessage({ type: "BUTTON_RESPONSE", data }, "*");
