@@ -1,101 +1,34 @@
 const express = require("express");
-const cors = require("cors");
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT;
-const ZOHO_URL = process.env.ZOHO_WEBHOOK_URL;
 
-app.use(cors());
+if (!PORT) throw new Error("Missing PORT");
+
+const DIFY_MCP_URL = process.env.DIFY_MCP_URL;
+if (!DIFY_MCP_URL) throw new Error("Missing DIFY_MCP_URL");
+
 app.use(express.json());
-
-app.get("/", (req, res) => {
-  res.send(`<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Code Button</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: transparent; }
-    .cssbuttons-io { position: relative; font-family: inherit; font-weight: 500; font-size: 18px; letter-spacing: 0.05em; border-radius: 0.8em; cursor: pointer; border: none; background: linear-gradient(to right, #8e2de2, #4a00e0); color: ghostwhite; overflow: hidden; }
-    .cssbuttons-io svg { width: 1.2em; height: 1.2em; margin-right: 0.5em; }
-    .cssbuttons-io span { position: relative; z-index: 10; transition: color 0.4s; display: inline-flex; align-items: center; padding: 0.8em 1.2em 0.8em 1.05em; }
-    .cssbuttons-io::before { content: ""; position: absolute; top: 0; left: -10%; width: 120%; height: 100%; background: #000; transform: skew(30deg); transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1); z-index: 0; }
-    .cssbuttons-io:hover::before { transform: translate3d(100%, 0, 0); }
-    .cssbuttons-io:active { transform: scale(0.95); }
-    .cssbuttons-io:disabled { opacity: 0.6; cursor: not-allowed; }
-    .cssbuttons-io.loading span::after { content: ""; display: inline-block; width: 0.8em; height: 0.8em; border: 2px solid rgba(255,255,255,0.35); border-top-color: #fff; border-radius: 50%; margin-left: 0.6em; animation: spin 0.6s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-  </style>
-</head>
-<body>
-  <button class="cssbuttons-io" id="codeBtn" onclick="callEndpoint()">
-    <span>
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 0h24v24H0z" fill="none"></path>
-        <path d="M24 12l-5.657 5.657-1.414-1.414L21.172 12l-4.243-4.243 1.414-1.414L24 12zM2.828 12l4.243 4.243-1.414 1.414L0 12l5.657-5.657L7.07 7.757 2.828 12zm6.96 9H7.66l6.552-18h2.128L9.788 21z" fill="currentColor"></path>
-      </svg>
-      Code
-    </span>
-  </button>
-  <script>
-    var SOURCE_ID      = "";
-    var CUSTOMER_ID    = "";
-    var VERSION        = "";
-    var MODEL          = "";
-    var TRIGGER        = "";
-    var AMOUNT         = "";
-    var PREVIOUS_VALUE = "";
-    var NEW_VALUE      = "";
-
-    async function callEndpoint() {
-      const btn = document.getElementById("codeBtn");
-      btn.disabled = true;
-      btn.classList.add("loading");
-      try {
-        const response = await fetch("/trigger", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            source_id:      SOURCE_ID,
-            customer_id:    CUSTOMER_ID,
-            version:        VERSION,
-            model:          MODEL,
-            trigger:        TRIGGER,
-            amount:         AMOUNT,
-            previous_value: PREVIOUS_VALUE,
-            new_value:      NEW_VALUE,
-            timestamp:      new Date().toISOString()
-          })
-        });
-        if (!response.ok) throw new Error("HTTP " + response.status);
-        const data = await response.json().catch(() => response.text());
-        console.log("✅", data);
-      } catch (err) {
-        console.error("❌", err.message);
-      } finally {
-        btn.disabled = false;
-        btn.classList.remove("loading");
-      }
-    }
-  </script>
-</body>
-</html>`);
-});
+app.use(express.static(path.join(__dirname, "public")));
 
 app.post("/trigger", async (req, res) => {
-  try {
-    const response = await fetch(ZOHO_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(req.body),
-    });
-    const data = await response.json().catch(() => response.text());
-    res.status(response.status).json(data);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  const response = await fetch(DIFY_MCP_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(req.body),
+  });
+
+  const text = await response.text();
+  res.status(response.status).send(text);
 });
 
-app.listen(PORT, () => console.log(`Running on port ${PORT}`));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+app.listen(PORT, () => {
+  console.log(`Running on port ${PORT}`);
+});

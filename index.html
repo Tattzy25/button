@@ -74,17 +74,14 @@
   </button>
 
   <script>
-    // ── YOUR VARIABLES — swap these with whatever your UI provides ────────────
-    var SOURCE_ID      = "";
-    var CUSTOMER_ID    = "";
-    var VERSION        = "";
-    var MODEL          = "";
-    var TRIGGER        = "";
-    var AMOUNT         = "";
+    var SOURCE_ID = "";
+    var CUSTOMER_ID = "";
+    var VERSION = "";
+    var MODEL = "";
+    var TRIGGER = "";
+    var AMOUNT = "";
     var PREVIOUS_VALUE = "";
-    var NEW_VALUE      = "";
-    // TIMESTAMP is auto-generated — do not touch
-    // ─────────────────────────────────────────────────────────────────────────
+    var NEW_VALUE = "";
 
     async function callEndpoint() {
       const btn = document.getElementById("codeBtn");
@@ -93,28 +90,30 @@
 
       try {
         const response = await fetch("/trigger", {
-          method:  "POST",
+          method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            source_id:      SOURCE_ID,
-            customer_id:    CUSTOMER_ID,
-            version:        VERSION,
-            model:          MODEL,
-            trigger:        TRIGGER,
-            amount:         AMOUNT,
+            source_id: SOURCE_ID,
+            customer_id: CUSTOMER_ID,
+            version: VERSION,
+            model: MODEL,
+            trigger: TRIGGER,
+            amount: AMOUNT,
             previous_value: PREVIOUS_VALUE,
-            new_value:      NEW_VALUE,
-            timestamp:      new Date().toISOString()
+            new_value: NEW_VALUE,
+            timestamp: new Date().toISOString()
           })
         });
 
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const text = await response.text();
+        console.log(text);
 
-        const data = await response.json().catch(() => response.text());
-        console.log("✅", data);
-
+        if (!response.ok) {
+          throw new Error(text || "Request failed");
+        }
       } catch (err) {
-        console.error("❌", err.message);
+        console.error(err);
+        alert(err.message);
       } finally {
         btn.disabled = false;
         btn.classList.remove("loading");
